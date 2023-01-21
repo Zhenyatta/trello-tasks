@@ -3,33 +3,30 @@ import express from "express";
 
 const app = express();
 
-let sessionCounter = 0;
-let counter;
+let pageVisitedTimesSession = 0;
+let pageVisitedTimesTotal = 0;
 
 try {
-  fs.existsSync("temp/my-counter-visited-times.txt")
-    ? (counter = fs.readFileSync("temp/my-counter-visited-times.txt", "utf8"))
-    : (counter = 0);
+  if (fs.existsSync("temp/my-counter-visited-times.txt")) {
+    (pageVisitedTimesTotal = Number(fs.readFileSync("temp/my-counter-visited-times.txt", "utf8")))
+  }
 } catch (e) {
   console.log(e);
 }
 
 app.get("/", (req, res) => {
-  sessionCounter++;
-  counter = parseInt(counter);
-  res.send(
-    `This page was visited ${
-      counter + sessionCounter
-    } times in total, ${sessionCounter} out of which was during the current code execution session ( statuscode:${
-      res.statusCode
-    } ) `
+  ++pageVisitedTimesSession;
+
+  res.status(200).send(
+    `This page was visited ${++pageVisitedTimesTotal
+    } times in total, ${pageVisitedTimesSession} out of which was during the current code execution session ) `
   );
 
-  let str = JSON.stringify(counter + sessionCounter);
-  fs.writeFile("temp/my-counter-visited-times.txt", str, (err) => {
-    if (err) throw err;
-    console.log("The file has been saved!");
-  });
+  try {
+    fs.writeFileSync("temp/my-counter-visited-times.txt", String(pageVisitedTimesTotal));
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 app.listen(8080);
