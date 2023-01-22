@@ -1,7 +1,6 @@
-import fs from "fs";
-import express from "express";
-
-const MY_COUNTER_VISITED_TIMES_FILE_PATH = 'temp/my-counter-visited-times.txt'
+import fs from 'fs';
+import express from 'express';
+import { MY_COUNTER_VISITED_TIMES_FILE_PATH } from './constants'
 
 const app = express();
 
@@ -21,8 +20,8 @@ app.get("/", (req, res) => {
   ++pageVisitedTimesTotal;
 
   res.status(200).send(
-    `This page was visited ${pageVisitedTimesTotal
-    } times in total, ${pageVisitedTimesSession} out of which was during the current code execution session ) `
+    `This page was visited ${pageVisitedTimesTotal}
+    times in total, ${pageVisitedTimesSession} out of which was during the current code execution session `
   );
 
   try {
