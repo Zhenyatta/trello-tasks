@@ -42,6 +42,6 @@ app.get('/my-counter', (req, res) => {
   }
 });
 
-app.get('env', (req, res) => res.status(200).send(res.send(`ENV: ${process.env.ENV}`)));
+app.get('env', (req, res) => res.status(200).res.send(`ENV: ${process.env.ENV}`));
 
 app.listen(8080);
