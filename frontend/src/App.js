@@ -4,11 +4,7 @@ import { RouterProvider } from "react-router-dom";
 
 import browserRouter from "./browser-router.js";
 
-const App = () => {
-  return (
-    <RouterProvider router={browserRouter} />
-  );
-}
+const App = () => <RouterProvider router={browserRouter} />;
 
 export default App;
 
