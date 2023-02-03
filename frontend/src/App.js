@@ -2,11 +2,11 @@ import React from "react";
 
 import { RouterProvider } from "react-router-dom";
 
-import Input from "./browser-router.js";
+import browserRouter from "./browser-router.js";
 
-function App() {
+const App = () => {
   return (
-    <RouterProvider router={Input} />
+    <RouterProvider router={browserRouter} />
   );
 }
 

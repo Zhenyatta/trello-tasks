@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import TextField from '@mui/material/TextField';
 
-const Input = createBrowserRouter([
+const browserRouter = createBrowserRouter([
     {
         path: "/documents/new",
         element: <div>
@@ -11,4 +11,4 @@ const Input = createBrowserRouter([
     },
 ]);
 
-export default Input;
+export default browserRouter;
