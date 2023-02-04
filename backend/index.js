@@ -19,6 +19,14 @@ try {
   console.log(e);
 }
 
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+app.use(express.json());
+
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
 app.get('/my-counter', (req, res) => {
@@ -43,5 +51,7 @@ app.get('/my-counter', (req, res) => {
 });
 
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
+
+app.post('/api/v1/documents', (req, res) => res.status(200).send(req.body));
 
 app.listen(8080);
