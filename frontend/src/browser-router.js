@@ -4,9 +4,7 @@ import SendForm from './SendForm.js';
 const browserRouter = createBrowserRouter([
     {
         path: '/documents/new',
-        element: <div>
-            <SendForm />
-        </div>,
+        element: <SendForm />,
     },
 ]);
 

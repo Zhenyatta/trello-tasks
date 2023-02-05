@@ -1,31 +1,29 @@
 import { useState } from 'react';
-import axios from 'axios';
 
-const UseFormSender = (reqType, url) => {
+import { axiosInstance } from '../axios';
+
+export const useAPI = (reqType, url) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
 
-    const cb = async (requestBody) => {
+    const cb = async (req) => {
         setLoading(true);
         setError(null);
+
         try {
-            const response = await axios({
+            const res = await axiosInstance({
                 method: reqType,
                 url,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: requestBody
+                data: req
             });
-            setData(response.data);
+            setData(res.data);
         } catch (err) {
             setError(err.message);
         }
+
         setLoading(false);
     };
 
     return { error, loading, cb, data };
 };
-
-export default UseFormSender;
