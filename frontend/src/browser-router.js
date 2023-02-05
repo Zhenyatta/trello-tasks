@@ -1,12 +1,11 @@
-import { createBrowserRouter } from "react-router-dom";
-
-import TextField from '@mui/material/TextField';
+import { createBrowserRouter } from 'react-router-dom';
+import SendForm from './SendForm.js';
 
 const browserRouter = createBrowserRouter([
     {
-        path: "/documents/new",
+        path: '/documents/new',
         element: <div>
-            <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+            <SendForm />
         </div>,
     },
 ]);
