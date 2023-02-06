@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import SendForm from './SendForm.js';
+import SendForm from './pages/SendForm.js';
 
 const browserRouter = createBrowserRouter([
     {

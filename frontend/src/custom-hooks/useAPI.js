@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { axiosInstance } from '../axios';
+import { axios } from '../axios';
 
 export const useAPI = (reqType, url) => {
     const [error, setError] = useState(null);
@@ -12,7 +12,7 @@ export const useAPI = (reqType, url) => {
         setError(null);
 
         try {
-            const res = await axiosInstance({
+            const res = await axios({
                 method: reqType,
                 url,
                 data: req

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useAPI } from './custom-hooks/useAPI.js';
+import { useAPI } from '../custom-hooks/useAPI.js';
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 const SendForm = () => {
     const [inputValue, setInputValue] = useState('');
-    const { error, loading, cb: postDocument, data } = useAPI('POST', '/api/v1/documents');
+    const { error, loading, cb: postDocument, data } = useAPI('POST', '/documents');
 
     const handleSubmit = (e) => {
         e.preventDefault();
