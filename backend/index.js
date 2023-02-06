@@ -1,5 +1,6 @@
 import fs from 'fs';
 import express from 'express';
+import cors from 'cors';
 import { VISIT_COUNTER_FILE_PATH } from './constants.js';
 
 const app = express();
@@ -19,7 +20,13 @@ try {
   console.log(e);
 }
 
+app.use(cors());
+
+app.use(express.json());
+
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
+
+app.post('/api/v1/documents', (req, res) => res.status(200).send(req.body));
 
 app.get('/my-counter', (req, res) => {
   pageVisitedTimesSession++;
