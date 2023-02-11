@@ -1,5 +1,6 @@
 import fs from 'fs';
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import { VISIT_COUNTER_FILE_PATH } from './constants.js';
 
@@ -23,6 +24,12 @@ try {
 app.use(cors());
 
 app.use(express.json());
+
+app.use(express.static(path.join('../frontend/build')));
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(process.cwd(), '../frontend/build', 'index.html'));
+});
 
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
