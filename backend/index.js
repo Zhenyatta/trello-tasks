@@ -27,10 +27,6 @@ app.use(express.json());
 
 app.use(express.static(path.join('../frontend/build')));
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(process.cwd(), '../frontend/build', 'index.html'));
-});
-
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
 app.post('/api/v1/documents', (req, res) => res.status(200).send(req.body));
@@ -57,5 +53,9 @@ app.get('/my-counter', (req, res) => {
 });
 
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(process.cwd(), '../frontend/build', 'index.html'));
+});
 
 app.listen(8080);
