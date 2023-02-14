@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path';
 import cors from 'cors';
 import { VISIT_COUNTER_FILE_PATH } from './constants.js';
+import { FE_BUILD_PATH } from './env.js';
 
 const app = express();
 
@@ -55,7 +56,7 @@ app.get('/my-counter', (req, res) => {
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
 
 app.get('*', function (req, res) {
-  res.sendFile(path.join(process.cwd(), '../frontend/build', 'index.html'));
+  res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html'));
 });
 
 app.listen(8080);
