@@ -26,7 +26,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(path.join('../frontend/build')));
+app.use(express.static(path.join(FE_BUILD_PATH)));
 
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
@@ -55,8 +55,6 @@ app.get('/my-counter', (req, res) => {
 
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html'));
-});
+app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html')));
 
 app.listen(8080);
