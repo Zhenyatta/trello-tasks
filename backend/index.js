@@ -26,7 +26,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(path.join(FE_BUILD_PATH)));
+app.use(express.static(FE_BUILD_PATH));
 
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
