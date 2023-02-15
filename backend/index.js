@@ -1,7 +1,9 @@
 import fs from 'fs';
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import { VISIT_COUNTER_FILE_PATH } from './constants.js';
+import { FE_BUILD_PATH } from './env.js';
 
 const app = express();
 
@@ -23,6 +25,8 @@ try {
 app.use(cors());
 
 app.use(express.json());
+
+app.use(express.static(path.join(FE_BUILD_PATH)));
 
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
@@ -50,5 +54,7 @@ app.get('/my-counter', (req, res) => {
 });
 
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
+
+app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html')));
 
 app.listen(8080);
