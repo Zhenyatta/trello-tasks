@@ -55,6 +55,25 @@ app.get('/my-counter', (req, res) => {
 
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
 
+/////////////////////////////////////////////////////
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+const getUsers = async () => {
+  const users = await prisma.users.findMany();
+  console.log('Users:', users);
+};
+
+getUsers()
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
 app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html')));
 
 app.listen(8080);
