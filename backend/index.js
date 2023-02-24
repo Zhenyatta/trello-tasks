@@ -29,31 +29,6 @@ app.use(express.json());
 
 app.use(express.static(FE_BUILD_PATH));
 
-//creating a user with Prisma in an IIFE
-
-(async () => {
-
-  const prisma = new PrismaClient();
-
-  const createUser = async (name, email, password) => {
-    if (password.length < 8) {
-      throw new Error(`${password}: Password must be at least 8 characters long`);
-    };
-
-    const user = await prisma.users.create({
-      data: {
-        name,
-        email,
-        password
-      },
-    });
-    console.log(`Created user with ID: ${user.id}`);
-  };
-
-  createUser('John Doe', 'john.doe@example.com', 'password');
-
-})();
-
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
 app.post('/api/v1/documents', (req, res) => res.status(200).send(req.body));
@@ -82,5 +57,27 @@ app.get('/my-counter', (req, res) => {
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
 
 app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html')));
+
+//Creating a user with Prisma 
+{
+  const prisma = new PrismaClient();
+
+  const createUser = async (name, email, password) => {
+    if (password.length < 8) {
+      throw new Error(`${password}: Password must be at least 8 characters long`);
+    };
+
+    const user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        password
+      },
+    });
+    console.log(`Created user with ID: ${user.id}`);
+  };
+
+  createUser('John Doe', 'john.doe@example.com', 'password');
+}
 
 app.listen(8080);
