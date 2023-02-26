@@ -2,6 +2,7 @@ import fs from 'fs';
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import { PrismaClient } from '@prisma/client';
 import { VISIT_COUNTER_FILE_PATH } from './constants.js';
 import { FE_BUILD_PATH } from './env.js';
 
@@ -26,7 +27,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(path.join(FE_BUILD_PATH)));
+app.use(express.static(FE_BUILD_PATH));
 
 app.get('/api/v1/my-counter', (req, res) => res.status(200).json(counters));
 
@@ -56,5 +57,38 @@ app.get('/my-counter', (req, res) => {
 app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
 
 app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html')));
+
+//Creating a user with Prisma
+{
+  const prisma = new PrismaClient();
+
+  const createUser = async (name, email, password) => {
+    if (password.length < 8) {
+      throw new Error(`${password}: Password must be at least 8 characters long`);
+    };
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      throw new Error(`${email}: Not valid email`);
+    };
+
+    const user = await prisma.users.create({
+      data: {
+        name,
+        email,
+        password
+      },
+    });
+    console.log(`Created user with ID: ${user.id}`);
+  };
+
+  try {
+    await createUser('John Doe', 'john.doe@example.com', 'password111');
+  } catch (err) {
+    console.log(err);
+  }
+
+};
 
 app.listen(8080);
