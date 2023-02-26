@@ -58,13 +58,19 @@ app.get('/env', (req, res) => res.status(200).send(`ENV: ${process.env.ENV}`));
 
 app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 'index.html')));
 
-//Creating a user with Prisma 
+//Creating a user with Prisma
 {
   const prisma = new PrismaClient();
 
   const createUser = async (name, email, password) => {
     if (password.length < 8) {
       throw new Error(`${password}: Password must be at least 8 characters long`);
+    };
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      throw new Error(`${email}: Not valid email`);
     };
 
     const user = await prisma.users.create({
@@ -77,7 +83,12 @@ app.get('*', (req, res) => res.sendFile(path.join(process.cwd(), FE_BUILD_PATH, 
     console.log(`Created user with ID: ${user.id}`);
   };
 
-  createUser('John Doe', 'john.doe@example.com', 'password');
-}
+  try {
+    await createUser('John Doe', 'john.doe@example.com', 'password111');
+  } catch (err) {
+    console.log(err);
+  }
+
+};
 
 app.listen(8080);
