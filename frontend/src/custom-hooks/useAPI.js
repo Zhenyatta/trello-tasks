@@ -18,6 +18,8 @@ export const useAPI = (reqType, url) => {
                 data: req
             });
             setData(res.data);
+            // setLoading(false);
+            // return res.data;
         } catch (err) {
             setError(err.message);
         }
