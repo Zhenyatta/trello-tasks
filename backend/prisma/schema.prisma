@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  lastname    String
+  email       String   @unique
+  phoneNumber String
+  password    String
+  createdAt   DateTime @default(now())
+
+  userCompanies UserCompany[]
+  Item          Item[]
+}
+
+model Company {
+  company_id Int      @id @default(autoincrement())
+  name       String   @db.Char(50)
+  tin        Int   
+  created_at DateTime @default(now())
+
+  userCompanies UserCompany[]
+  Item          Item[]
+}
+
+model UserCompany {
+  user_id    Int
+  company_id Int
+  role       Role     @default(user)
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [user_id], references: [id])
+  company Company @relation(fields: [company_id], references: [company_id])
+
+  @@id([user_id, company_id]) // Composite primary key
+}
+
+enum Role {
+  admin
+  editor
+  user
+}
+
+model Item {
+  item_id              Int       @id @default(autoincrement())
+  item_name            String    @db.VarChar(100)
+  item_type            String?   @db.VarChar(50)
+  purchase_date        DateTime?
+  maintenance_interval Int
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+  address              String?   @db.VarChar(255) // Address of the item (optional)
+  sku                  String?   @unique @db.VarChar(50) // SKU (unique identifier for the item)
+
+  company_id Int
+  user_id    Int
+
+  company      Company        @relation(fields: [company_id], references: [company_id])
+  user         User           @relation(fields: [user_id], references: [id])
+  Notification Notification[]
+}
+
+model Notification {
+  notification_id   Int       @id @default(autoincrement())
+  notification_name String    @db.VarChar(100)
+  description       String?   @db.Text
+  notify_at         DateTime?
+  video             String?   @db.Text
+  notify_who        String[]  @db.Text
+  is_completed      Boolean   @default(false)
+  is_planned        Boolean?
+  repeat_type       String    @db.Text
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  item_id Int
+
+  item Item @relation(fields: [item_id], references: [item_id])
+}
